@@ -966,8 +966,10 @@ func makeResult(matchedRules []rules.Rule, reason Reason) (res Result) {
 	}
 }
 
-// InitModule manually initializes blocked services map.  l must not be nil.
-func InitModule(ctx context.Context, l *slog.Logger) {
+// InitModule initializes the service catalog once at startup, before client IDs
+// are validated.  Custom definitions are optional.  l must not be nil.
+func InitModule(ctx context.Context, l *slog.Logger, customServicesPath string) {
+	registerCustomServices(ctx, l, customServicesPath)
 	initBlockedServices(ctx, l)
 }
 

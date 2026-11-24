@@ -824,10 +824,9 @@ func run(
 	err = configureOS(ctx, baseLogger, config)
 	fatalOnError(ctx, baseLogger, err)
 
-	// Clients package uses filtering package's static data
-	// (filtering.BlockedSvcKnown()), so we have to initialize filtering static
-	// data first, but also to avoid relying on automatic Go init() function.
-	filtering.InitModule(ctx, baseLogger)
+	// Clients validate their selected service IDs against the initialized catalog.
+	configDir := filepath.Dir(configFilePath(ctx, baseLogger, workDir, confPath))
+	filtering.InitModule(ctx, baseLogger, filepath.Join(configDir, "custom-services.yaml"))
 
 	confModifier := newDefaultConfigModifier(
 		config,

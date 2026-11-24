@@ -1,0 +1,7 @@
+services:
+  - id: wikipedia
+    name: Wikipedia
+    domains: [wikipedia.org]
+  - id: stack_overflow
+    name: Stack Overflow
+    domains: [stackoverflow.com, stackoverflow.blog]
