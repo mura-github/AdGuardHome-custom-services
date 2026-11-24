@@ -55,6 +55,7 @@ It operates as a DNS server that re-routes tracking domains to a “black hole�
     - [Automated install (Linux/Unix/MacOS/FreeBSD/OpenBSD)](#automated-install-linux-and-mac)
     - [Alternative methods](#alternative-methods)
     - [Guides](#guides)
+    - [Custom blocked services](#custom-blocked-services)
     - [API](#api)
 - [Comparing AdGuard Home to other solutions](#comparison)
     - [How is this different from public AdGuard DNS servers?](#comparison-adguard-dns)
@@ -127,6 +128,43 @@ If you're running **Linux,** there's a secure and easy way to install AdGuard Ho
 See our [Wiki][wiki].
 
 [wiki]: https://github.com/AdguardTeam/AdGuardHome/wiki
+
+### Custom blocked services
+
+You can block custom domains on the same schedule as built-in services. Group one or more domains into a custom service, then select that service in the web interface.
+
+#### How to use
+
+1. Copy [`examples/custom-services.yaml`](examples/custom-services.yaml) into the folder containing your active `AdGuardHome.yaml` (for example, `/opt/AdGuardHome/`). Keep the filename `custom-services.yaml`.
+
+2. Edit the file to define your services. In the following example, Wikipedia and Stack Overflow can be selected independently. Selecting Stack Overflow covers both the site and its blog.
+
+   ```yaml
+   services:
+     - id: wikipedia           # Unique service ID
+       name: Wikipedia         # Display name
+       domains:                # Includes subdomains
+         - wikipedia.org
+
+     - id: stack_overflow
+       name: Stack Overflow
+       domains:
+         - stackoverflow.com
+         - stackoverflow.blog
+   ```
+
+3. Restart AdGuard Home to load the file. On Linux with systemd, run the following command.
+
+   ```sh
+   sudo systemctl restart AdGuardHome
+   ```
+
+4. In the AdGuard Home web interface, go to **Filters → Blocked services**. Select **Custom** to filter the list, then turn on each service you want to block. Changes are saved automatically. Use **Inactivity schedule** to choose when service blocking pauses. Outside those hours, the selected services are blocked.
+
+#### Notes
+
+- Keep the same `id` when editing a service’s name or domains. Changing its ID means you must select it again.
+- If the file is missing or invalid, AdGuard Home starts with the built-in services and the **Custom** group is absent. Saving settings in that state may clear previous custom service selections. Check the file’s location and contents, then restart.
 
 ### <a href="#api" id="api" name="api">API</a>
 
