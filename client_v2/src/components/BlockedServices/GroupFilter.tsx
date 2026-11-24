@@ -47,6 +47,8 @@ const getGroupName = (id: string): string => {
             return intl.getMessage('parental_group_social_network');
         case 'software':
             return intl.getMessage('parental_group_software');
+        case 'user_custom':
+            return intl.getMessage('parental_group_user_custom');
         default:
             return id;
     }
